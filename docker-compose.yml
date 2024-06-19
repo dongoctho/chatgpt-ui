@@ -1,0 +1,28 @@
+version: '3'
+services:
+    web:
+        build: .
+        volumes:
+            - .:/var/www/html
+        env_file:
+            - .env.local
+        networks:
+            - localnet
+        ports:
+            - 80:80
+    transpiler:
+        image: node:20
+        volumes:
+            - .:/var/www/html
+        working_dir: /var/www/html
+    db:
+        image: postgres:15
+        environment:
+            - POSTGRES_PASSWORD=postgres
+            - POSTGRES_DB=chatgpt-ui
+        networks:
+            - localnet
+        ports:
+            - 5432:5432
+networks:
+    localnet:
